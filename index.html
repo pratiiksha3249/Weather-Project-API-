@@ -1,0 +1,123 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .main {
+            display: flex;
+            flex-direction: row;
+            gap: 10px;
+            /* align-items: center;
+            justify-content: center; */
+        }
+
+        .input {
+            width: 150px;
+            /* border: 2px grey solid; */
+            border-radius: 3px;
+        }
+
+        .btn {
+            border: blueviolet 1px solid;
+            padding: 5px 10px;
+            font-size: 8px;
+            border-radius: 3px;
+        }
+
+        .data {
+            display: flex;
+            margin-top: 20px;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            width: 200px;
+
+        }
+
+        .row {
+            display: flex;
+            flex-direction: row;
+            gap: 10px
+        }
+
+        .id {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 15px;
+
+        }
+
+        .res {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 15px;
+            align-items: flex-end;
+            color: #863893;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main">
+        <div class="input">
+            <input name="searchTxt" type="text" maxlength="512" id="searchTxt" class="searchField" />
+        </div>
+        <div class="btn" onclick="getdata()">submit</div>
+    </div>
+
+    <div class="data">
+        <div class="row">
+            <div id="heading">Location: </div>
+            <div class="res" id="loc"></div>
+        </div>
+        <div class="row">
+            <div id="heading">weather: </div>
+            <div class="res" id="weather"></div>
+        </div>
+        <div class="row">
+            <div id="heading">temp: </div>
+            <div class="res" id="temp"></div>
+        </div>
+        <div class="row">
+            <div id="heading">state: </div>
+            <div class="res" id="state"></div>
+        </div>
+
+        <div class="image">
+            <img id="imageId" src="https://cdn.weatherapi.com/weather/64x64/day/176.png" alt="" srcset="">
+        </div>
+    </div>
+</body>
+<script>
+    function getdata() {
+        var input = document.getElementById("searchTxt").value;
+        let location = document.getElementById("loc");
+        let waether = document.getElementById("weather");
+        let temp = document.getElementById('temp');
+        let state = document.getElementById('state');
+        var image  = document.getElementById('imageId')
+        const url = https://weatherapi-com.p.rapidapi.com/current.json?q=${input};
+        const options = {
+            method: 'GET',
+            headers: {
+                'x-rapidapi-key': 'ae1f22826emshd3c4f5f8c5a663fp175d2ejsn0525695c57d0',
+                'x-rapidapi-host': 'weatherapi-com.p.rapidapi.com'
+            }
+        };
+
+        try {
+            const response = fetch(url, options).then(r => r.json()).then(t => {
+                image.src = t.current.condition.icon;
+                location.innerHTML += t.location.name
+                waether.innerHTML += t.current.condition.text
+                temp.innerHTML += t.current.temp_c
+                state.innerHTML += t.location.region
+            });
+        } catch (error) {
+            console.error(error);
+        }
+
+    }
+</script>
+
+</html>
